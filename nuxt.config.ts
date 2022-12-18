@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   typescript: {
     strict: true
   },
-  router: {
-    base: routerPath,
+  app: {
+    baseURL: routerPath,
   }
 })
