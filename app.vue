@@ -13,16 +13,18 @@ const storeIp = () => {
 }
 async function sendRequest(command, val) {
   try {
-    const response = await fetch('/api/control', {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append(command, val);
+
+    const response = await fetch(`http://${ip.value}/form/control_cgi`, {
       method: 'POST',
-      body: JSON.stringify({
-        ip: ip.value,
-        command,
-        val,
-      }),
+      headers,
+      body: urlencoded,
     });
-    const result = await response.text();
-    turnedOn.value = result === 'true';
+    console.log(response);
   } catch (error) {
     console.log('error', error)
   }
