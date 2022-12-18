@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "optoma",
+  "homepage": "https://paul-em.github.io/optoma",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
