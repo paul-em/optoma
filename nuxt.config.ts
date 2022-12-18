@@ -5,6 +5,7 @@ const routerPath = process.env.DEPLOY_ENV === 'GH_PAGES' ? `/${pkg.name}/` : '/'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: false,
   typescript: {
     strict: true
   },
