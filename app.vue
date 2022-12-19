@@ -1,7 +1,7 @@
 
 <script setup>
 const title = ref('Hi')
-let turnedOn = ref(false)
+let projectorStatus = ref({})
 const ip = ref('')
 if (process.client) {
     ip.value = localStorage.getItem('ip') || '';
@@ -13,31 +13,36 @@ const storeIp = () => {
 }
 async function sendRequest(command, val) {
   try {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/x-www-form-urlencoded");
-
-    const urlencoded = new URLSearchParams();
-    urlencoded.append(command, val);
-
-    const response = await fetch(`http://${ip.value}/form/control_cgi`, {
+    const response = await fetch('/api/control', {
       method: 'POST',
-      headers,
-      body: urlencoded,
+      body: JSON.stringify({
+        ip: ip.value,
+        command,
+        val,
+      }),
     });
-    console.log(response);
+    projectorStatus.value = await response.json();
   } catch (error) {
     console.log('error', error)
   }
 }
+
+sendRequest('QueryControl', 'QueryControl');
 </script>
 
 <template>
   <div>
-    {{ title }}
   <input v-model="ip" @input="storeIp"/>
-  <button @click="turnOff">
-    Turn off
-  </button>
+  <div>
+    <p>
+      Status:
+      {{ projectorStatus.pw === '1' ? 'On': 'Off'}}
+    </p>
+    <p>
+      Volume:
+      {{ projectorStatus.m }}
+    </p>
+  </div>
   <button @click="sendRequest('vol1', '-')">
     Volume down
   </button>
